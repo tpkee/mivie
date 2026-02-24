@@ -31,7 +31,7 @@ export default defineConfigWithVueTs(
   skipFormatting,
 
   {
-    files: ['src/pages/**/*.vue'],
+    files: ['src/views/**/*.vue'],
     rules: {
       'vue/multi-word-component-names': 'off',
     },

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import IndexPage from '../pages/index.vue'
+import IndexView from '../views/index.vue'
+import ErrorView from '../views/error.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +8,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: IndexPage,
+      component: IndexView,
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: ErrorView,
     },
   ],
 })

@@ -28,11 +28,10 @@ const getComponentType = computed(() => {
   return props.to ? 'router-link' : 'button'
 })
 const variantClasses = computed(() => {
-  const variants: Record<ButtonVariant, string> = {
+  return {
     primary: 'border border-purple-600 bg-purple-700 hover:bg-purple-900/90',
     secondary: 'border border-gray-600 bg-gray-700 hover:bg-gray-600',
     tertiary: 'border border-red-600 bg-red-700 hover:bg-red-600',
-  }
-  return variants[props.variant]
+  }[props.variant]
 })
 </script>

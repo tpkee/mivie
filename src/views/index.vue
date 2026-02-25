@@ -1,13 +1,15 @@
 <template>
   <div>
     <h1 class="text-2xl font-semibold mb-2.5">Film più popolari nell'ultima settimana</h1>
-    <list-media :is-loading="true" :list="mockList" />
+    <list-media :is-loading="false" :list="mockList" />
   </div>
 </template>
 
 <script setup lang="ts">
 import ListMedia from '@/components/ListMedia.vue'
 import { parseResponse } from '@/utils/media/parseResponse'
+
+//api.themoviedb.org/3/trending/movie/{time_window}
 
 const mockList: Media[] = parseResponse([
   {

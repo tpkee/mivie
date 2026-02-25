@@ -32,11 +32,14 @@
         </div>
 
         <div
-          class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 h-14 group-hover:h-66 group-focus:h-66 transition-all duration-300 ease-linear"
+          class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 h-14"
+          :class="{
+            'group-hover:h-66 group-focus:h-66 transition-all duration-300 ease-linear': overview,
+          }"
         >
           <p class="text-xs text-gray-200">{{ releaseYear }}</p>
           <h3 class="text-lg font-medium leading-tight line-clamp-2">{{ title }}</h3>
-          <p class="text-sm mt-4 line-clamp-7">{{ overview }}</p>
+          <p v-if="overview" class="text-sm mt-4 line-clamp-7">{{ overview }}</p>
         </div>
       </div>
     </router-link>
@@ -48,20 +51,6 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
 
-// Types
-type MediaType = 'movie' | 'series'
-
-interface Props {
-  id: number
-  imageUrl: string
-  title: string
-  releaseYear: number | string
-  score: number
-  isFavorite: boolean
-  type: MediaType
-  overview: string
-}
-
 // Events
 const emit = defineEmits<{
   toggleFavorite: []
@@ -69,7 +58,16 @@ const emit = defineEmits<{
 }>()
 
 // Props
-const props = defineProps<Props>()
+const props = defineProps<{
+  id: number
+  imageUrl: string
+  title: string
+  releaseYear: number | string
+  score: number
+  isFavorite: boolean
+  type: MediaType
+  overview?: Nullable<string>
+}>()
 
 // Computed
 const getScore = computed(() => (Number.isNaN(props.score) ? 0 : props.score))
@@ -84,7 +82,7 @@ const getPath = computed(() => {
   switch (props.type) {
     case 'movie':
       return `/movie/${props.id}`
-    case 'series':
+    case 'tv':
       return `/series/${props.id}`
     default:
       return '#'

@@ -2,7 +2,7 @@
   <main>
     <router-view name="header" />
 
-    <div class="container mx-auto">
+    <div class="container mx-auto p-4 pt-7!">
       <router-view />
     </div>
   </main>

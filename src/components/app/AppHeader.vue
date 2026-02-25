@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full p-4 border-b border-gray-800 mb-7">
+  <header class="w-full p-4 border-b border-gray-800">
     <div class="container mx-auto flex items-center gap-4">
       <button class="cursor-pointer" @click="toggleMenu">
         <Icon icon="line-md:menu" class="w-6 h-fit" />

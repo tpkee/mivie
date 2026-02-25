@@ -1,6 +1,6 @@
 <template>
   <section class="">
-    <div class="flex flex-wrap gap-4">
+    <div class="flex flex-wrap gap-2.5">
       <template v-if="isLoading">
         <item-skeleton v-for="index in 8" :key="`skeleton-${index}`" />
       </template>

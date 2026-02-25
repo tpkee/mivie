@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="text-2xl font-semibold mb-2.5">Film più popolari nell'ultima settimana</h1>
     <list-media :is-loading="true" :list="mockList" />
   </div>
 </template>

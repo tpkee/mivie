@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-48 h-66">
+  <div class="w-48 h-66">
     <router-link :to="getPath" class="group">
       <div
         class="relative size-full bg-gray-700 bg-cover bg-center rounded overflow-hidden cursor-pointer flex flex-col justify-between"
@@ -27,19 +27,23 @@
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >
-            {{ getScore }}
+            {{ score.toFixed(1) }}
           </p>
         </div>
 
         <div
-          class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 h-14"
-          :class="{
-            'group-hover:h-66 group-focus:h-66 transition-all duration-300 ease-linear': overview,
-          }"
+          class="absolute opacity-0 text-ghost-white bg-black/60 backdrop-blur-lg p-2.5 group-hover:opacity-100 group-focus:opacity-100 size-full inset-0 transition-all duration-100 ease-linear z-10"
         >
-          <p class="text-xs text-gray-200">{{ releaseYear }}</p>
-          <h3 class="text-lg font-medium leading-tight line-clamp-2">{{ title }}</h3>
-          <p v-if="overview" class="text-sm mt-4 line-clamp-7">{{ overview }}</p>
+          <p v-if="overview" class="text-sm mt-4 line-clamp-8">{{ overview }}</p>
+        </div>
+
+        <div class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 max-h-fit">
+          <i class="text-xs text-gray-400 leading-tight block">{{
+            new Date(props.releaseYear).getFullYear()
+          }}</i>
+          <h3 class="text-base font-medium leading-tight line-clamp-2" :title="title">
+            {{ title }}
+          </h3>
         </div>
       </div>
     </router-link>
@@ -50,6 +54,7 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import { ScoreTreshold } from '@/utils/media/scoreTreshold'
 
 // Events
 const emit = defineEmits<{
@@ -70,11 +75,10 @@ const props = defineProps<{
 }>()
 
 // Computed
-const getScore = computed(() => (Number.isNaN(props.score) ? 0 : props.score))
 const getScoreColor = computed(() => {
-  if (getScore.value >= 70) return 'text-green-500'
+  if (props.score >= ScoreTreshold.GOOD) return 'text-green-500'
 
-  if (getScore.value >= 40) return 'text-yellow-500'
+  if (props.score >= ScoreTreshold.AVERAGE) return 'text-yellow-500'
 
   return 'text-red-500'
 })
@@ -98,6 +102,6 @@ const getPath = computed(() => {
 }
 
 .fab {
-  @apply size-8 rounded-full bg-black/40 backdrop-blur-sm;
+  @apply size-8 rounded-full bg-black/50 backdrop-blur-sm text-shadow-black/40 text-shadow-2xs;
 }
 </style>

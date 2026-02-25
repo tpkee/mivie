@@ -14,24 +14,33 @@ export function parseResponse(list: Nullable<MediaResponse[]>): Media[] {
     }
 
     const media: Media = {
-      adult: item.adult ?? false,
+      adult: !!(item.adult),
       backdrop_path: item.backdrop_path ?? '',
       id: item.id,
       title: item.title,
       original_language: item.original_language ?? '',
       original_title: item.original_title,
       overview: item.overview ?? '',
-      poster_path: item.poster_path ?? '',
+      poster_path: getPosterUrl(item.poster_path),
       media_type: item.media_type,
       genre_ids: item.genre_ids?.filter((id): id is number => id != null) ?? [],
       popularity: item.popularity ?? 0,
       release_date: item.release_date ?? '',
-      video: item.video ?? false,
+      video: !!(item.video),
       vote_average: item.vote_average ?? 0,
       vote_count: item.vote_count ?? 0,
     }
 
     acc.push(media)
+
     return acc
   }, [])
+}
+
+function getPosterUrl(path: Nullable<string>): string {
+  if (!path) return ''
+
+  const parsedPath = path.startsWith('/') ? path.slice(1) : path
+
+  return new URL(parsedPath, new URL('https://image.tmdb.org/t/p/original/')).toString()
 }

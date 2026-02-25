@@ -2,11 +2,16 @@
   <div class="w-40 md:w-48 h-66">
     <router-link :to="getPath" class="group">
       <div
-        class="relative size-full bg-gray-700 bg-cover bg-center rounded overflow-hidden cursor-pointer flex flex-col justify-between"
-        :style="{
-          backgroundImage: `url(${props.imageUrl})`,
-        }"
+        class="relative size-full bg-gray-700 rounded overflow-hidden cursor-pointer flex flex-col justify-between"
       >
+        <img
+          v-if="media.posterUrl"
+          :src="media.posterUrl"
+          :alt="media.title"
+          fetchpriority="high"
+          loading="lazy"
+          class="size-full object-cover object-center rounded absolute inset-0"
+        />
         <div class="flex items-center justify-between default-padding">
           <button
             class="fab transition-all cursor-pointer group/icon"
@@ -15,7 +20,7 @@
               'hover:text-ghost-white text-red-400': isFavorite,
             }"
             aria-label="Toggle favorite"
-            @click.prevent="watchlistStore.toggle(id)"
+            @click.prevent="watchlistStore.toggle(media)"
           >
             <Icon
               :icon="isFavorite ? 'line-md:heart-filled' : 'line-md:heart'"
@@ -27,16 +32,16 @@
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >
-            {{ score.toFixed(1) }}
+            {{ media.voteAverage.toFixed(1) }}
           </p>
         </div>
 
         <div class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 max-h-fit">
           <i class="text-xs text-gray-400 leading-tight block">{{
-            new Date(props.releaseYear).getFullYear()
+            new Date(media.releaseDate).getFullYear()
           }}</i>
-          <h3 class="text-base font-medium leading-tight line-clamp-2" :title="title">
-            {{ title }}
+          <h3 class="text-base font-medium leading-tight line-clamp-2" :title="props.media.title">
+            {{ media.title }}
           </h3>
         </div>
       </div>
@@ -56,31 +61,24 @@ const watchlistStore = useWatchlist()
 
 // Props
 const props = defineProps<{
-  id: number
-  imageUrl: string
-  title: string
-  releaseYear: number | string
-  score: number
-  isFavorite: boolean
-  type: MediaType
-  overview?: Nullable<string>
+  media: Media
 }>()
 
 // Computed
-const isFavorite = computed(() => watchlistStore.mediaIds.has(props.id))
+const isFavorite = computed(() => watchlistStore.watchlist.has(props.media.id))
 const getScoreColor = computed(() => {
-  if (props.score >= ScoreTreshold.GOOD) return 'text-green-500'
+  if (props.media.voteAverage >= ScoreTreshold.GOOD) return 'text-green-500'
 
-  if (props.score >= ScoreTreshold.AVERAGE) return 'text-yellow-500'
+  if (props.media.voteAverage >= ScoreTreshold.AVERAGE) return 'text-yellow-500'
 
   return 'text-red-500'
 })
 const getPath = computed(() => {
-  switch (props.type) {
+  switch (props.media.mediaType) {
     case 'movie':
-      return `/movie/${props.id}`
+      return `/movie/${props.media.id}`
     case 'tv':
-      return `/series/${props.id}`
+      return `/series/${props.media.id}`
     default:
       return '#'
   }

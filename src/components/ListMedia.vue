@@ -14,18 +14,7 @@
       </template>
 
       <template v-else>
-        <item-media
-          v-for="(item, index) of list"
-          :key="index"
-          :id="item.id"
-          :image-url="item.poster_path ?? ''"
-          :title="(item.title ?? item.original_title)!"
-          :release-year="item.release_date"
-          :score="item.vote_average"
-          :is-favorite="false"
-          :type="item.media_type"
-          :overview="item.overview"
-        />
+        <item-media v-for="(item, index) of list" :key="index" :media="item" />
       </template>
     </div>
   </section>

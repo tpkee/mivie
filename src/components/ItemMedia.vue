@@ -24,7 +24,7 @@
           >
             <Icon
               :icon="isFavorite ? 'line-md:heart-filled' : 'line-md:heart'"
-              class="w-5 h-5 m-auto group-hover/icon:scale-120 group-active/icon:scale-125 transition-all duration-250 ease-in-out"
+              class="size-6 m-auto group-hover/icon:scale-120 group-active/icon:scale-125 transition-all duration-250 ease-in-out"
             />
           </button>
 
@@ -93,6 +93,6 @@ const getPath = computed(() => {
 }
 
 .fab {
-  @apply size-8 rounded-full bg-black/50 backdrop-blur-sm text-shadow-black/40 text-shadow-2xs;
+  @apply size-9 rounded-full bg-black/50 backdrop-blur-sm text-shadow-black/40 text-shadow-2xs;
 }
 </style>

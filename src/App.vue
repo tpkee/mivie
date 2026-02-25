@@ -2,7 +2,9 @@
   <main>
     <router-view name="header" />
 
-    <router-view />
+    <div class="container mx-auto">
+      <router-view />
+    </div>
   </main>
 </template>
 

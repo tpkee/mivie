@@ -1,5 +1,5 @@
 <template>
-  <div class="w-48 h-66">
+  <div class="w-40 md:w-48 h-66">
     <router-link :to="getPath" class="group">
       <div
         class="relative size-full bg-gray-700 bg-cover bg-center rounded overflow-hidden cursor-pointer flex flex-col justify-between"
@@ -19,7 +19,7 @@
           >
             <Icon
               :icon="isFavorite ? 'line-md:heart-filled' : 'line-md:heart'"
-              class="w-5 h-5 m-auto group-hover/icon:scale-120 transition-all duration-250 ease-in-out"
+              class="w-5 h-5 m-auto group-hover/icon:scale-120 group-active/icon:scale-125 transition-all duration-250 ease-in-out"
             />
           </button>
 
@@ -29,12 +29,6 @@
           >
             {{ score.toFixed(1) }}
           </p>
-        </div>
-
-        <div
-          class="absolute opacity-0 text-ghost-white bg-black/60 backdrop-blur-lg p-2.5 group-hover:opacity-100 group-focus:opacity-100 size-full inset-0 transition-all duration-100 ease-linear z-10"
-        >
-          <p v-if="overview" class="text-sm mt-4 line-clamp-8">{{ overview }}</p>
         </div>
 
         <div class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 max-h-fit">

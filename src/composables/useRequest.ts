@@ -1,4 +1,5 @@
 import { createFetch } from "@vueuse/core"
+import type { MaybeRefOrGetter } from "vue"
 
 export const useRequest = createFetch({
   baseUrl: import.meta.env.VITE_BASE_URL,
@@ -17,3 +18,7 @@ export const useRequest = createFetch({
     mode: 'cors',
   },
 })
+
+export function useCustomFetch<T>(url: MaybeRefOrGetter<string>) {
+  return useRequest<T>(url).get().json()
+}

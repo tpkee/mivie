@@ -11,11 +11,11 @@
           <button
             class="fab transition-all cursor-pointer group/icon"
             :class="{
-              'hover:text-red-400': isFavorite,
-              'hover:text-ghost-white': !isFavorite,
+              'hover:text-red-400 text-ghost-white': !isFavorite,
+              'hover:text-ghost-white text-red-400': isFavorite,
             }"
             aria-label="Toggle favorite"
-            @click.stop.prevent="emit('toggle')"
+            @click.prevent="watchlistStore.toggle(id)"
           >
             <Icon
               :icon="isFavorite ? 'line-md:heart-filled' : 'line-md:heart'"
@@ -49,12 +49,10 @@ import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { ScoreTreshold } from '@/utils/media/scoreTreshold'
+import { useWatchlist } from '@/stores/watchlist'
 
-// Events
-const emit = defineEmits<{
-  toggleFavorite: []
-  toggle: []
-}>()
+// Stores
+const watchlistStore = useWatchlist()
 
 // Props
 const props = defineProps<{
@@ -69,6 +67,7 @@ const props = defineProps<{
 }>()
 
 // Computed
+const isFavorite = computed(() => watchlistStore.mediaIds.has(props.id))
 const getScoreColor = computed(() => {
   if (props.score >= ScoreTreshold.GOOD) return 'text-green-500'
 

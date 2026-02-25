@@ -47,10 +47,10 @@ const navItems = [
     label: 'Home',
     to: '/',
   },
-  // {
-  //   label: 'Watchlist',
-  //   to: '/watchlist',
-  // },
+  {
+    label: 'Watchlist',
+    to: '/watchlist',
+  },
 ]
 </script>
 

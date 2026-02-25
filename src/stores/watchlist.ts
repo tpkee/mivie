@@ -1,17 +1,18 @@
-import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
+import { defineStore } from 'pinia'
 
 export const useWatchlist = defineStore('watchlist', () => {
-  const mediaIds = useLocalStorage('watchlistMediaIds', new Set<number>())
+   // since we may (will) have to check quite a lot of elements to see if they are in the watchlist and perform add/removal ops,
+   // maps will prrovide a better DX and performances (right?) compared to lists
+  const watchlist = useLocalStorage('watchlist', new Map<number, Media>())
 
-  function toggle(id: number) {
-    console.log(`Toggling media ID ${id} in watchlist.`)
-    if (mediaIds.value.has(id)) {
-      mediaIds.value.delete(id)
+  function toggle(el: Media) {
+    if (watchlist.value.has(el.id)) {
+      watchlist.value.delete(el.id)
     } else {
-      mediaIds.value.add(id)
+      watchlist.value.set(el.id, el)
     }
   }
 
-  return { mediaIds, toggle }
+  return { watchlist, toggle }
 })

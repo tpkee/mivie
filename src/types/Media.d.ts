@@ -1,11 +1,11 @@
-type MediaType = 'movie' | 'tv'
+type MediaType = 'movie' | 'tv' | 'person'
 
 interface Media {
   id: number
   title: string
   overview: string
   posterUrl: string
-  mediaType: MediaType // non exaustive
+  mediaType: MediaType
   releaseDate: string
   voteAverage: number
   fetchedAt: number

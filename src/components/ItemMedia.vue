@@ -7,33 +7,32 @@
         <img
           v-if="media.posterUrl"
           :src="media.posterUrl"
-          :alt="media.title"
           fetchpriority="high"
           loading="lazy"
           class="size-full object-cover object-center rounded absolute inset-0"
         />
-        <div class="flex items-center justify-between default-padding">
-          <button
-            class="fab transition-all cursor-pointer group/icon"
+        <div class="flex items-center justify-between p-2.5">
+          <app-fab
+            class="group/icon"
             :class="{
-              'hover:text-red-400 text-ghost-white': !isFavorite,
-              'hover:text-ghost-white text-red-400': isFavorite,
+              'hover:text-red-400 text-ghost-white': !inWatchlist,
+              'hover:text-ghost-white text-red-400': inWatchlist,
             }"
-            aria-label="Toggle favorite"
+            aria-label="Aggiungi alla watchlist"
             @click.prevent="watchlistStore.toggle(media)"
           >
             <Icon
-              :icon="isFavorite ? 'line-md:heart-filled' : 'line-md:heart'"
+              :icon="inWatchlist ? 'line-md:heart-filled' : 'line-md:heart'"
               class="size-6 m-auto group-hover/icon:scale-120 group-active/icon:scale-125 transition-all duration-250 ease-in-out"
             />
-          </button>
+          </app-fab>
 
-          <p
+          <app-fab
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >
             {{ media.voteAverage.toFixed(1) }}
-          </p>
+          </app-fab>
         </div>
 
         <div class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 max-h-fit">
@@ -56,6 +55,8 @@ import { Icon } from '@iconify/vue'
 import { ScoreTreshold } from '@/utils/media/misc'
 import { useWatchlist } from '@/stores/watchlist'
 
+import AppFab from '@/components/app/AppFab.vue'
+
 // Stores
 const watchlistStore = useWatchlist()
 
@@ -65,7 +66,7 @@ const props = defineProps<{
 }>()
 
 // Computed
-const isFavorite = computed(() => watchlistStore.watchlist.has(props.media.id))
+const inWatchlist = computed(() => watchlistStore.watchlist.has(props.media.id))
 const getScoreColor = computed(() => {
   if (props.media.voteAverage >= ScoreTreshold.GOOD) return 'text-green-500'
 
@@ -75,15 +76,3 @@ const getScoreColor = computed(() => {
 })
 const getPath = computed(() => `/${props.media.mediaType}/${props.media.id}`)
 </script>
-
-<style scoped>
-@reference "#tailwindcss";
-
-.default-padding {
-  @apply p-2.5;
-}
-
-.fab {
-  @apply size-9 rounded-full bg-black/50 backdrop-blur-sm text-shadow-black/40 text-shadow-2xs;
-}
-</style>

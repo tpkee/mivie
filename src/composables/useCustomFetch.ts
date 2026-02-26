@@ -1,24 +1,23 @@
-import { createFetch, type UseFetchOptions } from "@vueuse/core"
-import type { MaybeRefOrGetter } from "vue"
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN
 
- const customFetch = createFetch({
-  baseUrl: import.meta.env.VITE_BASE_URL,
-  options: {
-    async beforeFetch({ options }) {
-      options.headers = {
-        ...options.headers,
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_ACCESS_TOKEN}`,
-      }
-
-      return { options }
+export async function useCustomFetch<T>(path: string): Promise<T> {
+  const response = await fetch(formatUrl(path), {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`,
     },
-  },
-  fetchOptions: {
     mode: 'cors',
-  },
-})
+  })
 
-export function useCustomFetch<T>(url: MaybeRefOrGetter<string>, opts: UseFetchOptions = {}) {
-  return customFetch(url, opts).get().json<T>()
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} ${response.statusText}`)
+  }
+
+  return response.json() as Promise<T>
+}
+
+function formatUrl(path: string) {
+  const rel = path.startsWith('/') ? path.slice(1) : path
+  return new URL(rel, BASE_URL)
 }

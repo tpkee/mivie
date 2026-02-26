@@ -10,25 +10,17 @@
 </template>
 
 <script setup lang="ts">
-import { useCustomFetch } from '@/composables/useCustomFetch'
 import { parseResponse } from '@/utils/media/parseResponse'
-import { computed } from 'vue'
 
 import TableMedia from '@/components/TableMedia.vue'
 import { BASE_TMDB_LANGUAGE } from '@/utils/media/misc'
-
-// Computed
-const getUrl = computed(() => {
-  return `/trending/movie/week?language=${BASE_TMDB_LANGUAGE}`
-})
+import { useCustomQuery } from '@/composables/useCustomQuery'
 
 // Fetching
-const { data, isFetching, error } = useCustomFetch<Media[]>(getUrl, {
-  afterFetch: (ctx) => {
-    ctx.data = parseResponse(ctx.data.results)
-
-    return ctx
-  },
-  initialData: [],
+const { data, isFetching, error } = useCustomQuery<
+  PaginatedRequestResponse<MediaResponse>,
+  Media[]
+>(`/trending/movie/week?language=${BASE_TMDB_LANGUAGE}`, {
+  parser: (raw) => parseResponse(raw.results),
 })
 </script>

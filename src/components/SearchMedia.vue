@@ -1,6 +1,5 @@
 <template>
   <div ref="container" class="relative w-full" @keydown.esc="closeDropdown">
-    {{ results }}
     <app-input
       v-model="filters.query"
       placeholder="Cerca film, serie TV, attori..."
@@ -27,14 +26,14 @@
           :movie-genres="movieGenres"
         />
 
-        <div v-show="hasSearched" ref="scrollContainer">
-          <list-search
-            :list="results"
-            :is-fetching="isFetching"
-            :can-load-more="canLoadMore"
-            :error="error"
-          />
-        </div>
+        <list-search
+          ref="scrollContainer"
+          :list="results"
+          :is-fetching="isFetching"
+          :can-load-more="canLoadMore"
+          :error="error?.message"
+          :has-searched="hasSearched"
+        />
       </div>
     </transition>
   </div>
@@ -42,10 +41,9 @@
 
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { computed, ref, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, ref, shallowRef, useTemplateRef } from 'vue'
 import { Icon } from '@iconify/vue'
 
-import { useCustomFetch } from '@/composables/useCustomFetch'
 import { useDebounce } from '@/composables/useDebounce'
 import { parseResponse as parseGenreResponse } from '@/utils/genre/parseResponse'
 import { parseResponse as parseSearchResponse } from '@/utils/search/parseResponse'
@@ -55,10 +53,11 @@ import { useInfiniteFetch } from '@/composables/useInfiniteFetch'
 import SearchFilters from './SearchFilters.vue'
 import ListSearch from './ListSearch.vue'
 import AppInput from './app/AppInput.vue'
+import { useCustomQuery } from '@/composables/useCustomQuery'
 
 // Template refs
-const refContainer = useTemplateRef('container')
-const refScrollContainer = useTemplateRef('scrollContainer')
+const refContainer = useTemplateRef<HTMLElement>('container')
+const refScrollContainer = useTemplateRef<HTMLElement>('scrollContainer')
 
 // Reactive state
 const selectedMedia = ref<SearchType>('all')
@@ -72,13 +71,13 @@ const { isDebouncing } = useDebounce(filters, filtersDebounced, 350)
 const isDropdownOpen = ref(false)
 
 // Computed
-const hasSearched = computed(() => {
-  return (
+const hasSearched = computed(() =>
+  Boolean(
     filtersDebounced.value.query ||
     filtersDebounced.value.genre ||
-    filtersDebounced.value.year != null
-  )
-})
+    filtersDebounced.value.year != null,
+  ),
+)
 const getSearchUrl = computed(() => {
   const query = filtersDebounced.value?.query
   const year = filtersDebounced.value?.year
@@ -109,41 +108,32 @@ const getSearchUrl = computed(() => {
 })
 
 // Fetching
-const { results, canLoadMore, error, isFetching, resetResults, resetScrollbox } =
-  useInfiniteFetch<SearchResult>(getSearchUrl, refScrollContainer, (arr) => {
-    const type = selectedMedia.value === 'all' ? undefined : selectedMedia.value
-    return parseSearchResponse(arr, type)
-  })
+const { results, canLoadMore, error, isFetching, resetScrollbox } = useInfiniteFetch<SearchResult>(
+  getSearchUrl,
+  refScrollContainer,
+  {
+    parser: (arr) => {
+      const type = selectedMedia.value === 'all' ? undefined : selectedMedia.value
+      return parseSearchResponse(arr as SearchResponse[], type)
+    },
+  },
+)
 
-const { data: movieGenres } = useCustomFetch<Genre[]>(
+const { data: movieGenres } = useCustomQuery<GenreResponse, Genre[]>(
   `/genre/movie/list?language=${BASE_TMDB_LANGUAGE}`,
   {
-    afterFetch(ctx) {
-      ctx.data = parseGenreResponse(ctx.data)
-
-      return ctx
-    },
-    initialData: [],
+    parser: parseGenreResponse,
+    initialData: { genres: [] },
   },
 )
 
-const { data: tvGenres } = useCustomFetch<Genre[]>(
+const { data: tvGenres } = useCustomQuery<GenreResponse, Genre[]>(
   `/genre/tv/list?language=${BASE_TMDB_LANGUAGE}`,
   {
-    afterFetch(ctx) {
-      ctx.data = parseGenreResponse(ctx.data)
-
-      return ctx
-    },
-    initialData: [],
+    parser: parseGenreResponse,
+    initialData: { genres: [] },
   },
 )
-
-// Watchers
-watch(selectedMedia, () => {
-  resetScrollbox()
-  resetResults()
-})
 
 // Functions
 function openDropdown() {

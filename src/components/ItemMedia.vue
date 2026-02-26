@@ -73,16 +73,7 @@ const getScoreColor = computed(() => {
 
   return 'text-red-500'
 })
-const getPath = computed(() => {
-  switch (props.media.mediaType) {
-    case 'movie':
-      return `/movie/${props.media.id}`
-    case 'tv':
-      return `/series/${props.media.id}`
-    default:
-      return '#'
-  }
-})
+const getPath = computed(() => `/${props.media.mediaType}/${props.media.id}`)
 </script>
 
 <style scoped>

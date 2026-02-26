@@ -1,7 +1,7 @@
 <template>
   <div v-show="hasSearched" class="overflow-y-auto max-h-80">
     <ul v-if="list.length">
-      <item-search v-for="item in list" :key="item.id" :result="item" />
+      <item-search v-for="item in list" :key="item.id" :result="item" @close="emit('close')" />
     </ul>
 
     <p v-else-if="error" class="px-3 py-4 text-sm text-red-500 text-center">
@@ -28,4 +28,6 @@ defineProps<{
   error?: string
   hasSearched?: boolean
 }>()
+
+const emit = defineEmits<{ close: [] }>()
 </script>

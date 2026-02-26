@@ -33,6 +33,7 @@
           :can-load-more="canLoadMore"
           :error="error?.message"
           :has-searched="hasSearched"
+          @close="closeDropdown"
         />
       </div>
     </transition>

@@ -1,5 +1,9 @@
 <template>
-  <li class="flex items-center gap-3 px-3 py-2 hover:bg-gray-800 cursor-pointer transition-colors">
+  <router-link
+    class="flex items-center gap-3 px-3 py-2 hover:bg-gray-800 cursor-pointer transition-colors"
+    :to="getPath"
+    @click="emit('close')"
+  >
     <img
       v-if="result.posterUrl"
       :src="result.posterUrl"
@@ -15,7 +19,7 @@
         {{ getMediaLabel }}
       </p>
     </div>
-  </li>
+  </router-link>
 </template>
 
 <script setup lang="ts">
@@ -25,6 +29,8 @@ import { computed } from 'vue'
 const props = defineProps<{
   result: SearchResult
 }>()
+
+const emit = defineEmits(['close'])
 
 const getMediaLabel = computed(() => {
   switch (props.result.mediaType) {
@@ -36,4 +42,6 @@ const getMediaLabel = computed(() => {
       return 'Attore'
   }
 })
+
+const getPath = computed(() => `/${props.result.mediaType}/${props.result.id}`)
 </script>

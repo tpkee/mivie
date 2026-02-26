@@ -8,7 +8,6 @@
     <div v-else class="w-8 h-12 bg-gray-700 rounded shrink-0 flex items-center justify-center">
       <Icon icon="mdi:image-off" class="text-gray-500 w-4 h-4" />
     </div>
-    xxx{{ result }}
 
     <div class="min-w-0">
       <p class="text-sm font-medium text-white truncate">{{ result.name }}</p>

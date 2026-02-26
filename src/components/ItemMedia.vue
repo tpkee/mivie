@@ -12,20 +12,7 @@
           class="size-full object-cover object-center rounded absolute inset-0"
         />
         <div class="flex items-center justify-between p-2.5">
-          <app-fab
-            class="group/icon"
-            :class="{
-              'hover:text-red-400 text-ghost-white': !inWatchlist,
-              'hover:text-ghost-white text-red-400': inWatchlist,
-            }"
-            aria-label="Aggiungi alla watchlist"
-            @click.prevent="watchlistStore.toggle(media)"
-          >
-            <Icon
-              :icon="inWatchlist ? 'line-md:heart-filled' : 'line-md:heart'"
-              class="size-6 m-auto group-hover/icon:scale-120 group-active/icon:scale-125 transition-all duration-250 ease-in-out"
-            />
-          </app-fab>
+          <fab-watchlist :media="media" />
 
           <app-fab
             class="fab flex items-center justify-center text-sm font-semibold"
@@ -51,14 +38,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Icon } from '@iconify/vue'
-import { ScoreTreshold } from '@/utils/media/misc'
-import { useWatchlist } from '@/stores/watchlist'
 
 import AppFab from '@/components/app/AppFab.vue'
+import FabWatchlist from '@/components/FabWatchlist.vue'
 
-// Stores
-const watchlistStore = useWatchlist()
+import { useScoreAverage } from '@/composables/useScoreAverage'
 
 // Props
 const props = defineProps<{
@@ -66,13 +50,6 @@ const props = defineProps<{
 }>()
 
 // Computed
-const inWatchlist = computed(() => watchlistStore.watchlist.has(props.media.id))
-const getScoreColor = computed(() => {
-  if (props.media.voteAverage >= ScoreTreshold.GOOD) return 'text-green-500'
-
-  if (props.media.voteAverage >= ScoreTreshold.AVERAGE) return 'text-yellow-500'
-
-  return 'text-red-500'
-})
+const getScoreColor = useScoreAverage(props.media.voteAverage)
 const getPath = computed(() => `/${props.media.mediaType}/${props.media.id}`)
 </script>

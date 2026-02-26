@@ -53,7 +53,7 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { ScoreTreshold } from '@/utils/media/scoreTreshold'
+import { ScoreTreshold } from '@/utils/media/misc'
 import { useWatchlist } from '@/stores/watchlist'
 
 // Stores

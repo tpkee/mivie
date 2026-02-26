@@ -4,25 +4,31 @@
       title="Film più popolari nell'ultima settimana"
       :is-fetching="isFetching"
       :error="error?.message"
-      :list="getList"
+      :list="data ?? []"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRequest } from '@/composables/useRequest'
+import { useCustomFetch } from '@/composables/useCustomFetch'
 import { parseResponse } from '@/utils/media/parseResponse'
 import { computed } from 'vue'
 
 import TableMedia from '@/components/TableMedia.vue'
-
-// Fetching
-const { data, isFetching, error } = useRequest<PaginatedRequest<MediaResponse>>(
-  '/trending/movie/week',
-)
-  .get()
-  .json()
+import { BASE_TMDB_LANGUAGE } from '@/utils/media/misc'
 
 // Computed
-const getList = computed<Media[]>(() => parseResponse(data.value?.results ?? []))
+const getUrl = computed(() => {
+  return `/trending/movie/week?language=${BASE_TMDB_LANGUAGE}`
+})
+
+// Fetching
+const { data, isFetching, error } = useCustomFetch<Media[]>(getUrl, {
+  afterFetch: (ctx) => {
+    ctx.data = parseResponse(ctx.data.results)
+
+    return ctx
+  },
+  initialData: [],
+})
 </script>

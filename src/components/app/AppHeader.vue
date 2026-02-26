@@ -6,11 +6,7 @@
       </button>
 
       <div class="w-full">
-        <app-input placeholder="Cerca film, serie TV, attori...">
-          <template #left>
-            <Icon icon="mi:search" class="w-6" />
-          </template>
-        </app-input>
+        <search-media />
       </div>
     </div>
   </header>
@@ -22,8 +18,8 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
-import AppInput from '@/components/app/AppInput.vue'
 import AppNav from '@/components/app/AppNav.vue'
+import SearchMedia from '@/components/SearchMedia.vue'
 
 // Reactive state
 const isMenuOpen = ref(false)

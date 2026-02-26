@@ -1,3 +1,5 @@
+import { getPosterUrl } from './getPosterUrl'
+
 export function parseResponse(list: Nullable<MediaResponse[]>): Media[] {
   if (!list) return []
 
@@ -12,14 +14,17 @@ export function parseMedia(item: MediaResponse, type?: Nullable<MediaType>): Nul
   const mediaType = item.media_type || type
   const title = item.title || item.original_title
 
-  if (!item.id || !mediaType || !title){
-      // these are the only required fields whose absence would make the data unusable
-      console.error(`Skipping item with id ${item.id} due to missing required fields.`, item)
-      return null
+  if (!item.id || !mediaType || !title) {
+    // these are the only required fields whose absence would make the data unusable
+    console.error(`Skipping item with id ${item.id} due to missing required fields.`, item)
+    return null
   }
 
   if (!['movie', 'tv'].includes(mediaType)) {
-    console.warn(`Skipping item with id ${item.id} due to unsupported media type: ${mediaType}.`, item)
+    console.warn(
+      `Skipping item with id ${item.id} due to unsupported media type: ${mediaType}.`,
+      item,
+    )
     return null
   }
 
@@ -33,12 +38,4 @@ export function parseMedia(item: MediaResponse, type?: Nullable<MediaType>): Nul
     voteAverage: item.vote_average ?? 0,
     fetchedAt: Date.now(),
   }
-}
-
-function getPosterUrl(path: Nullable<string>): string {
-  if (!path) return ''
-
-  const parsedPath = path.startsWith('/') ? path.slice(1) : path
-
-  return new URL(parsedPath, new URL(import.meta.env.VITE_IMAGE_BASE_URL)).toString()
 }

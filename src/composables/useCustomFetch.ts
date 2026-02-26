@@ -1,7 +1,7 @@
-import { createFetch } from "@vueuse/core"
+import { createFetch, type UseFetchOptions } from "@vueuse/core"
 import type { MaybeRefOrGetter } from "vue"
 
-export const useRequest = createFetch({
+ const customFetch = createFetch({
   baseUrl: import.meta.env.VITE_BASE_URL,
   options: {
     async beforeFetch({ options }) {
@@ -19,6 +19,6 @@ export const useRequest = createFetch({
   },
 })
 
-export function useCustomFetch<T>(url: MaybeRefOrGetter<string>) {
-  return useRequest<T>(url).get().json()
+export function useCustomFetch<T>(url: MaybeRefOrGetter<string>, opts: UseFetchOptions = {}) {
+  return customFetch(url, opts).get().json<T>()
 }

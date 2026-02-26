@@ -7,10 +7,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useWatchlist } from '@/stores/watchlist'
-import { useRequest } from '@/composables/useRequest'
+import { useCustomFetch } from '@/composables/useCustomFetch'
 import { parseMedia } from '@/utils/media/parseResponse'
 
 import TableMedia from '@/components/TableMedia.vue'
+import { BASE_TMDB_LANGUAGE } from '@/utils/media/misc'
 
 // Stores
 const watchlistStore = useWatchlist()
@@ -30,6 +31,9 @@ async function refreshStaleEntries() {
   const staleMedia = []
 
   for (const media of watchlistStore.watchlist.values()) {
+    // since we save the entire media object there is a chance the data will actually go stale (es: a movie gets postponed etc.)
+    // scores are even worse since they are likely to change, so we need to refresh the data. Unfortunately, there isn't a bulk fetch endpoint so we have to quietly update the stale data while showing the user the old one
+
     if (!media.fetchedAt || Date.now() - media.fetchedAt > cacheLifetime) {
       staleMedia.push(media)
     }
@@ -42,9 +46,9 @@ async function refreshStaleEntries() {
   try {
     await Promise.all(
       staleMedia.map(async (media: Media) => {
-        const { data, error } = await useRequest(`/${media.mediaType}/${media.id}`)
-          .get()
-          .json<MediaResponse>()
+        const { data, error } = await useCustomFetch<MediaResponse>(
+          `/${media.mediaType}/${media.id}?language=${BASE_TMDB_LANGUAGE}`,
+        )
 
         if (error.value || !data.value) return
 

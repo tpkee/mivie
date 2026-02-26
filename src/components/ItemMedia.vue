@@ -15,17 +15,15 @@
           <fab-watchlist :media="media" />
 
           <app-fab
+            v-if="Date.now() > getReleaseDate.getTime()"
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >
             {{ media.voteAverage.toFixed(1) }}
           </app-fab>
         </div>
-
         <div class="text-ghost-white bg-black/50 backdrop-blur-sm p-2.5 max-h-fit">
-          <i class="text-xs text-gray-400 leading-tight block">{{
-            new Date(media.releaseDate).getFullYear()
-          }}</i>
+          <i class="text-xs text-gray-400 leading-tight block">{{ getDateLabel }}</i>
           <h3 class="text-base font-medium leading-tight line-clamp-2" :title="props.media.title">
             {{ media.title }}
           </h3>
@@ -50,6 +48,14 @@ const props = defineProps<{
 }>()
 
 // Computed
+const getReleaseDate = computed(() => new Date(props.media.releaseDate))
+const getDateLabel = computed(() => {
+  if (getReleaseDate.value.getTime() > Date.now()) {
+    return `In uscita - ${new Intl.DateTimeFormat('it-IT', { year: 'numeric' }).format(getReleaseDate.value)}`
+  }
+
+  return new Intl.DateTimeFormat('it-IT', { year: 'numeric' }).format(getReleaseDate.value)
+})
 const getScoreColor = useScoreAverage(props.media.voteAverage)
 const getPath = computed(() => `/${props.media.mediaType}/${props.media.id}`)
 </script>

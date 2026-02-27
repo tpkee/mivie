@@ -6,7 +6,7 @@
     :poster-url="data.posterUrl"
     :tagline="data.tagline"
     :genres="data.genres"
-    :score="data.voteAverage"
+    :score="scoreToShow"
     :score-color-class="scoreColorClass"
   >
     <template #actions>
@@ -84,8 +84,34 @@ const { data } = useQuery({
 
 const scoreColorClass = useScoreAverage(() => data.value?.voteAverage)
 
+const getReleaseDate = computed(() => {
+  if (!data.value) return null
+
+  const date = 'releaseDate' in data.value ? data.value.releaseDate : data.value.firstAirDate
+  return date ? new Date(date) : null
+})
+
+const showScore = computed(() => {
+  if (!getReleaseDate.value) return false
+  return Date.now() > getReleaseDate.value.getTime()
+})
+
+const scoreToShow = computed(() => {
+  if (!showScore.value || !data.value) return null
+  return data.value.voteAverage
+})
+
 function formatDate(d: string) {
-  return d ? new Date(d).toLocaleDateString('it-IT') : ''
+  if (!d) {
+    return 'TBA'
+  }
+
+  const date = new Date(d)
+  if (date.getTime() > Date.now()) {
+    return `In uscita - ${new Intl.DateTimeFormat('it-IT', { year: 'numeric' }).format(date)}`
+  }
+
+  return date.toLocaleDateString('it-IT')
 }
 
 function detailToMedia(data: MovieDetail | TvDetail): Media {

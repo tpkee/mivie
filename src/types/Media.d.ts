@@ -3,12 +3,12 @@ type MediaType = 'movie' | 'tv' | 'person'
 interface Media {
   id: number
   title: string
-  overview: string
-  posterUrl: string
+  overview: Nullable<string>
+  posterUrl: Nullable<string>
   mediaType: MediaType
-  releaseDate: string
-  voteAverage: number
-  fetchedAt: number
+  releaseDate: Nullable<string>
+  voteAverage: Nullable<number>
+  fetchedAt: Nullable<number>
 }
 
 type MediaResponse = RecursivePartial<{

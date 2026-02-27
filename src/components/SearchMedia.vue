@@ -55,6 +55,7 @@ import SearchFilters from './SearchFilters.vue'
 import ListSearch from './ListSearch.vue'
 import AppInput from './app/AppInput.vue'
 import { useCustomQuery } from '@/composables/useCustomQuery'
+import { hToMs } from '@/utils/common/hToMs'
 
 // Template refs
 const refContainer = useTemplateRef<HTMLElement>('container')
@@ -125,6 +126,7 @@ const { data: movieGenres } = useCustomQuery<GenreResponse, Genre[]>(
   {
     parser: parseGenreResponse,
     initialData: { genres: [] },
+    staleTime: hToMs(24),
   },
 )
 
@@ -133,6 +135,7 @@ const { data: tvGenres } = useCustomQuery<GenreResponse, Genre[]>(
   {
     parser: parseGenreResponse,
     initialData: { genres: [] },
+    staleTime: hToMs(24),
   },
 )
 

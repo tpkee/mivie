@@ -13,12 +13,13 @@ import { parseMedia } from '@/utils/media/parseResponse'
 import TableMedia from '@/components/TableMedia.vue'
 import { BASE_TMDB_LANGUAGE } from '@/utils/media/misc'
 import { useCustomFetch } from '@/composables/useCustomFetch'
+import { hToMs } from '@/utils/common/hToMs'
 
 // Stores
 const watchlistStore = useWatchlist()
 
 // Non reactive state
-const cacheLifetime = 1000 * 3600 * 12
+const cacheLifetime = hToMs(24)
 
 // Reactive state
 const getQueries = computed(() =>

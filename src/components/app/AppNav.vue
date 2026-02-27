@@ -21,6 +21,7 @@
             :to="item.to"
             class="flex items-center justify-between px-3 py-2 rounded border transition-colors border-gray-700 bg-gray-800 hover:border-purple-600 hover:bg-gray-700"
             exact-active-class="border-purple-600 bg-purple-700/30 text-ghost-white"
+            @click="emit('close')"
           >
             <span>{{ item.label }}</span>
           </router-link>

@@ -1,6 +1,6 @@
 <template>
-  <section class="">
-    <div class="flex flex-wrap gap-2.5">
+  <section>
+    <div class="grid gap-2.5 grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(12rem,1fr))]">
       <template v-if="isLoading">
         <item-skeleton v-for="index in 8" :key="index" />
       </template>
@@ -14,7 +14,12 @@
       </template>
 
       <template v-else>
-        <item-media v-for="(item, index) of list" :key="index" :media="item" />
+        <item-media
+          v-for="(item, index) of list"
+          :key="index"
+          :media="item"
+          class="w-full h-full"
+        />
       </template>
     </div>
   </section>

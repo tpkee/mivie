@@ -1,15 +1,15 @@
 <template>
-  <div class="w-40 md:w-48 h-66">
+  <div class="w-full h-full">
     <router-link :to="getPath" class="group">
       <div
-        class="relative size-full bg-gray-700 rounded overflow-hidden cursor-pointer flex flex-col justify-between"
+        class="relative w-full h-full aspect-2/3 bg-gray-700 rounded overflow-hidden cursor-pointer flex flex-col justify-between"
       >
         <img
           v-if="media.posterUrl"
           :src="media.posterUrl"
           fetchpriority="high"
           loading="lazy"
-          class="size-full object-cover object-center rounded absolute inset-0"
+          class="w-full h-full object-cover object-center rounded absolute inset-0"
         />
         <div class="flex items-center justify-between p-2.5">
           <fab-watchlist :media="media" />

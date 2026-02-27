@@ -4,7 +4,7 @@ import { useCustomFetch } from './useCustomFetch'
 import { toValue } from 'vue'
 
 interface Options<TRaw, TData = TRaw> {
-  key?: MaybeRefOrGetter<string>[]
+  key?: MaybeRefOrGetter<string | number>[]
   parser?: (raw: TRaw) => TData
   initialData?: TRaw
 }

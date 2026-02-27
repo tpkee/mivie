@@ -15,7 +15,7 @@
           <fab-watchlist :media="media" />
 
           <app-fab
-            v-if="Date.now() > getReleaseDate.getTime()"
+            v-if="getReleaseDate && Date.now() > getReleaseDate.getTime()"
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >
@@ -48,8 +48,13 @@ const props = defineProps<{
 }>()
 
 // Computed
-const getReleaseDate = computed(() => new Date(props.media.releaseDate))
+const getReleaseDate = computed(() =>
+  props.media.releaseDate ? new Date(props.media.releaseDate) : null,
+)
 const getDateLabel = computed(() => {
+  if (!getReleaseDate.value) {
+    return 'TBA '
+  }
   if (getReleaseDate.value.getTime() > Date.now()) {
     return `In uscita - ${new Intl.DateTimeFormat('it-IT', { year: 'numeric' }).format(getReleaseDate.value)}`
   }

@@ -7,6 +7,7 @@ interface Options<TRaw, TData = TRaw> {
   key?: MaybeRefOrGetter<string | number>[]
   parser?: (raw: TRaw) => TData
   initialData?: TRaw
+  staleTime?: number
 }
 
 export function useCustomQuery<TRaw, TData = TRaw>(
@@ -19,5 +20,6 @@ export function useCustomQuery<TRaw, TData = TRaw>(
     queryFn: () => useCustomFetch<TRaw>(toValue(url)),
     select: options.parser,
     initialData: () => options.initialData,
+    staleTime: options.staleTime,
   })
 }

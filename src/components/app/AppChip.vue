@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex items-center gap-1 px-2 py-2 rounded-full border transition-all transition-duration-300"
+    class="inline-flex items-center gap-1 px-3 py-2 rounded-full border transition-all transition-duration-300"
     :class="{
       'border-gray-700 bg-gray-900 hover:border-purple-600 hover:bg-gray-800': !active,
       'border-purple-600 bg-purple-700 hover:bg-purple-800': active,

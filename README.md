@@ -1,7 +1,7 @@
 # README
 - **Live:** https://mivie.netlify.app/
 - **Repo:** https://github.com/tpkee/mivie
-- 
+
 ## Installazione
 
 ### Requisiti

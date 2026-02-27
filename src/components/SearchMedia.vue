@@ -103,7 +103,9 @@ const getSearchUrl = computed(() => {
   }
 
   if (year) {
-    params.append('year', year.toString())
+    const yearParam =
+      selectedMedia.value === 'movie' ? 'primary_release_year' : 'first_air_date_year'
+    params.append(yearParam, year.toString())
   }
 
   return `${searchUrl}?${params.toString()}`

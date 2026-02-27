@@ -6,7 +6,7 @@ import { toValue } from 'vue'
 interface Options<TRaw, TData = TRaw> {
   key?: MaybeRefOrGetter<string | number>[]
   parser?: (raw: TRaw) => TData
-  initialData?: TRaw
+  placeholderData?: TRaw
   staleTime?: number
 }
 
@@ -15,11 +15,11 @@ export function useCustomQuery<TRaw, TData = TRaw>(
   options: Options<TRaw, TData> = {},
 ) {
   const queryKey = options.key ?? [url]
+
   return useQuery<TRaw, Error, TData>({
     queryKey,
     queryFn: () => useCustomFetch<TRaw>(toValue(url)),
     select: options.parser,
-    initialData: () => options.initialData,
     staleTime: options.staleTime,
   })
 }

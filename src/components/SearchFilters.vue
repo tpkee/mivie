@@ -23,7 +23,7 @@
       <transition name="slide-fade">
         <div
           v-if="selectedMedia !== 'all'"
-          class="mt-2 items-center gap-2.5 text-sm text-gray-300 grid grid-cols-2 max-w-xs"
+          class="mt-2 items-center gap-2.5 text-gray-300 grid grid-cols-2 max-w-xs"
         >
           <app-input
             label="Anno di uscita"

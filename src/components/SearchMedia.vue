@@ -10,7 +10,7 @@
         <Icon icon="mi:search" class="w-6" />
       </template>
       <template #right v-if="isDebouncing">
-        <Icon icon="line-md:loading-loop" class="w-6 h-6 text-gray-400" />
+        <Icon icon="line-md:loading-loop" class="size-5 text-gray-400 absolute top-1 right-1.5" />
       </template>
     </app-input>
 
@@ -127,7 +127,6 @@ const { data: movieGenres } = useCustomQuery<GenreResponse, Genre[]>(
   `/genre/movie/list?language=${BASE_TMDB_LANGUAGE}`,
   {
     parser: parseGenreResponse,
-    initialData: { genres: [] },
     staleTime: hToMs(24),
   },
 )
@@ -136,7 +135,6 @@ const { data: tvGenres } = useCustomQuery<GenreResponse, Genre[]>(
   `/genre/tv/list?language=${BASE_TMDB_LANGUAGE}`,
   {
     parser: parseGenreResponse,
-    initialData: { genres: [] },
     staleTime: hToMs(24),
   },
 )

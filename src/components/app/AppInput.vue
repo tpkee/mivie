@@ -6,7 +6,7 @@
         :class="{
           'sr-only': srOnlyLabel,
         }"
-        class="block mb-0.5 relative"
+        class="block mb-0.5 relative text-sm"
       >
         {{ label }}
       </span>
@@ -18,7 +18,12 @@
           <slot name="left" />
         </span>
 
-        <input :id="uid" v-bind="attrs" v-model="modelValue" class="focus:outline-none w-full" />
+        <input
+          :id="uid"
+          v-bind="attrs"
+          v-model="modelValue"
+          class="focus:outline-none w-full text-base lg:text-sm"
+        />
 
         <span v-show="slots.right" aria-hidden>
           <slot name="right" />

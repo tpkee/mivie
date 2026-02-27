@@ -15,11 +15,7 @@
           <fab-watchlist :media="media" />
 
           <app-fab
-            v-if="
-              getReleaseDate &&
-              Date.now() > getReleaseDate.getTime() &&
-              typeof media.voteAverage === 'number'
-            "
+            v-if="getReleaseDate && Date.now() > getReleaseDate.getTime() && media.voteAverage"
             class="fab flex items-center justify-center text-sm font-semibold"
             :class="[getScoreColor]"
           >

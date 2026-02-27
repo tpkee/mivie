@@ -97,7 +97,7 @@ const showScore = computed(() => {
 })
 
 const scoreToShow = computed(() => {
-  if (!showScore.value || !data.value) return null
+  if (!showScore.value || !data.value || !data.value.voteAverage) return null
   return data.value.voteAverage
 })
 

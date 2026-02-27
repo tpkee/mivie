@@ -57,5 +57,5 @@ const getDateLabel = computed(() => {
   return new Intl.DateTimeFormat('it-IT', { year: 'numeric' }).format(getReleaseDate.value)
 })
 const getScoreColor = useScoreAverage(props.media.voteAverage)
-const getPath = computed(() => `/${props.media.mediaType}/${props.media.id}`)
+const getPath = computed(() => `/details/${props.media.mediaType}/${props.media.id}`)
 </script>

@@ -1,31 +1,38 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import IndexView from '../views/index.vue'
-import ErrorView from '../views/error.vue'
-import WatchlistView from '../views/watchlist.vue'
-import AppHeader from '@/components/app/AppHeader.vue'
+import { createRouter, createWebHistory, RouterView } from 'vue-router'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'index',
       components: {
-        default: IndexView,
-        header: AppHeader,
+        default: RouterView,
+        header: () => import('@/components/app/AppHeader.vue'),
       },
-    },
-    {
-      path: '/watchlist',
-      name: 'watchlist',
-      components: {
-        default: WatchlistView,
-        header: AppHeader,
-      },
+      children: [
+        { path: '', component: () => import('@/views/index.vue') },
+        { path: 'watchlist', component: () => import('@/views/watchlist.vue') },
+        {
+          path: 'details',
+          children: [
+            {
+              path: ':type(movie|tv)/:id',
+              name: 'media-details',
+              component: () => import('@/views/details/media.vue'),
+            },
+            {
+              path: 'person/:id',
+              name: 'person-details',
+              component: () => import('@/views/details/person.vue'),
+            },
+          ],
+        },
+      ],
     },
     {
       path: '/:catchAll(.*)',
       name: '404',
-      component: ErrorView,
+      component: () => import('@/views/error.vue'),
     },
   ],
 })

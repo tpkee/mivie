@@ -43,5 +43,5 @@ const getMediaLabel = computed(() => {
   }
 })
 
-const getPath = computed(() => `/${props.result.mediaType}/${props.result.id}`)
+const getPath = computed(() => `/details/${props.result.mediaType}/${props.result.id}`)
 </script>

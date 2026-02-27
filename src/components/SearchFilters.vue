@@ -100,7 +100,7 @@ const filterTypes = [
   },
   {
     type: 'tv',
-    label: 'Serie TV',
+    label: 'Serie',
     icon: MediaIcon.TV,
   },
 ] as const

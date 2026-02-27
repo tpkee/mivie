@@ -137,18 +137,27 @@ const { data: tvGenres } = useCustomQuery<GenreResponse, Genre[]>(
 )
 
 // Functions
+function reset() {
+  filters.value = {
+    query: '',
+    genre: null,
+    year: null,
+  }
+  selectedMedia.value = 'all'
+  resetScrollbox()
+}
 function openDropdown() {
   isDropdownOpen.value = true
 }
 
 function closeDropdown() {
   isDropdownOpen.value = false
+  reset()
 }
 
 // Misc
 onClickOutside(refContainer, () => {
-  resetScrollbox()
-  isDropdownOpen.value = false
+  closeDropdown()
 })
 </script>
 

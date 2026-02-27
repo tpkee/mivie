@@ -3,18 +3,16 @@
     <router-view name="header" />
 
     <div class="container mx-auto p-4 pt-7!">
-      <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component, route }">
         <template v-if="Component">
           <Transition mode="out-in">
-            <KeepAlive>
-              <Suspense>
-                <component :is="Component"></component>
+            <Suspense :timeout="0">
+              <component :is="Component" :key="route.path" />
 
-                <template #fallback>
-                  <app-loader />
-                </template>
-              </Suspense>
-            </KeepAlive>
+              <template #fallback>
+                <app-loader />
+              </template>
+            </Suspense>
           </Transition>
         </template>
       </router-view>

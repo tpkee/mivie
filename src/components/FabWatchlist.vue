@@ -5,6 +5,7 @@
       'hover:text-red-400 text-ghost-white': !inWatchlist,
       'hover:text-ghost-white text-red-400': inWatchlist,
     }"
+    :background="background"
     aria-label="Aggiungi alla watchlist"
     @click.prevent="watchlistStore.toggle(media)"
   >
@@ -26,6 +27,7 @@ const watchlistStore = useWatchlist()
 
 const props = defineProps<{
   media: Media
+  background?: 'black' | 'white'
 }>()
 
 const inWatchlist = computed(() => watchlistStore.watchlist.has(props.media.id))

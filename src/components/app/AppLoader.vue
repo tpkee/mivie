@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 w-screen bg-purple-600 z-999 h-px animate-pulse"
+    class="fixed inset-0 w-screen bg-purple-600 z-999 h-px animate-pulse pointer-events-none"
     :style="{
       width: `${width}vw`,
       transition: 'width 0.2s ease-out',
@@ -11,13 +11,12 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue'
 
-const width = ref(0)
+const width = ref(5)
 
 let rafId: number | null = null
 const target = ref(0)
 
 function animate() {
-  console.log('Animating... Target:', target.value, 'Width:', width.value)
   // increment target slowly and randomly
   if (target.value < 100) {
     target.value = Math.min(100, target.value + Math.random() * 0.3 + 0.05)

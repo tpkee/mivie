@@ -1,5 +1,6 @@
 import { useLocalStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
+import { watch } from 'vue'
 
 export const useWatchlist = defineStore('watchlist', () => {
   // since we may (will) have to check quite a lot of elements to see if they are in the watchlist and perform add/removal ops,
@@ -13,6 +14,18 @@ export const useWatchlist = defineStore('watchlist', () => {
       watchlist.value.set(el.id, el)
     }
   }
+
+  watch(
+    watchlist,
+    () => {
+      watchlist.value.forEach((value, key) => {
+        if (!value.id || value.id !== key || !value.title || !value.mediaType) {
+          watchlist.value.delete(key)
+        }
+      })
+    },
+    { immediate: true, deep: true },
+  )
 
   return { watchlist, toggle }
 })

@@ -1,3 +1,3 @@
 export function hToMs(hours: number): number {
-  return hours * 1000 * 60 * 60
+  return hours * Math.pow(60, 2) * Math.pow(10, 3)
 }

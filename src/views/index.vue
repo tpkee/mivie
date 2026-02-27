@@ -15,6 +15,7 @@ import { parseResponse } from '@/utils/media/parseResponse'
 import TableMedia from '@/components/TableMedia.vue'
 import { BASE_TMDB_LANGUAGE } from '@/utils/media/misc'
 import { useCustomQuery } from '@/composables/useCustomQuery'
+import { hToMs } from '@/utils/common/hToMs'
 
 // Fetching
 const { data, isFetching, error } = useCustomQuery<
@@ -22,5 +23,6 @@ const { data, isFetching, error } = useCustomQuery<
   Media[]
 >(`/trending/movie/week?language=${BASE_TMDB_LANGUAGE}`, {
   parser: (raw) => parseResponse(raw.results),
+  staleTime: hToMs(1),
 })
 </script>

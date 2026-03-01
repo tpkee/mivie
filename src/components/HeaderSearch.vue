@@ -9,7 +9,7 @@
       <template #left>
         <Icon icon="mi:search" class="w-6" />
       </template>
-      <template #right v-if="isDebouncing">
+      <template #right v-if="isDebouncing && isDropdownOpen">
         <Icon icon="line-md:loading-loop" class="size-5 text-gray-400 absolute top-1 right-1.5" />
       </template>
     </app-input>

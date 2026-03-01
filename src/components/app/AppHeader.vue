@@ -6,7 +6,7 @@
       </button>
 
       <div class="w-full">
-        <search-media />
+        <header-search />
       </div>
     </div>
   </header>
@@ -19,7 +19,7 @@ import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
 import AppNav from '@/components/app/AppNav.vue'
-import SearchMedia from '@/components/SearchMedia.vue'
+import HeaderSearch from '@/components/HeaderSearch.vue'
 
 // Reactive state
 const isMenuOpen = ref(false)
